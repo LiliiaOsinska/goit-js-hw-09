@@ -1,25 +1,26 @@
 let formData = { email: '', message: '' };
 const LS_KEY = 'feedback-form-state';
 const form = document.querySelector('.feedback-form');
+const email = document.querySelector('[name="email"]');
+const message = document.querySelector('[name="message"]');
 form.addEventListener('input', handleInput);
-const obj = {};
-function handleInput(event) {
-  const key = event.target.name;
-  const value = event.target.value;
-  obj[key] = value;
-  localStorage.setItem(LS_KEY, JSON.stringify(obj).trim());
+function handleInput() {
+  const elEmail = email.value;
+  const elMessage = message.value;
+  formData.message = elMessage.trim();
+  formData.email = elEmail.trim();
+  localStorage.setItem(LS_KEY, JSON.stringify(formData));
 }
-
 addValues();
 function addValues() {
-  const value = localStorage.getItem(LS_KEY);
-  formData = JSON.parse(value) || { email: '', message: '' };
+  const valueLs = localStorage.getItem(LS_KEY);
+  formData = JSON.parse(valueLs) || { email: '', message: '' };
   const { email, message } = formData;
   if (email) {
-    document.querySelector('.form-input').value = email;
+    document.querySelector('[name="email"]').value = email;
   }
   if (message) {
-    document.querySelector('.form-textarea').value = message;
+    document.querySelector('[name="message"]').value = message;
   }
 }
 
@@ -34,7 +35,7 @@ function handleSubmit(event) {
   }
   formData.email = elEmail.trim();
   formData.message = elMessage.trim();
-  event.target.reset();
+  form.reset();
   localStorage.removeItem(LS_KEY);
   console.log(formData);
 }
